@@ -21,7 +21,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <limits.h>
-
+#include <sys/time.h> 				// Added for correctness_verification
 #include "ViennaRNA/utils/basic.h"
 #include "ViennaRNA/utils/structures.h"
 #include "ViennaRNA/params/default.h"
@@ -66,6 +66,12 @@ struct ms_helpers {
  # GLOBAL VARIABLES              #
  #################################
  */
+
+long HAIR_TIME = 0;
+long M_BRANCH_TIME = 0;
+long COAX_TIME = 0;
+long INTERIOR_TIME = 0;
+long M_STRAND_TIME = 0;
 
 /*
  #################################
@@ -225,6 +231,57 @@ vrna_mfe(vrna_fold_compound_t *fc,
       ms_dat = get_ms_helpers(fc);
 
     energy = fill_arrays(fc, ms_dat);
+	
+    /*Additions for correctness_verification Start Here*/
+  
+    // Print arrays created by the fill_arrays function   
+ 
+    vrna_mx_mfe_t  *matrices;
+    vrna_param_t   *P;
+    vrna_md_t      *md;
+    int            i, j, length, ij, uniq_ML, *indx, *c, *fML, *fM1;
+
+    length      = (int)fc->length;
+    indx        = fc->jindx;
+    matrices    = fc->matrices;
+    P           = fc->params;
+    md          = &(P->model_details);
+    c           = matrices->c;
+    fML         = matrices->fML;
+    fM1         = matrices->fM1;
+    uniq_ML     = md->uniq_ML;
+
+    printf("Matrix C");
+    for (i = length - 1; i >= 1; i--) {
+      for (j = i + 1; j <= length; j++) {
+        ij = indx[j] + i;
+        printf("%d ",c[ij]);
+      }
+    }
+    
+    printf("Matrix FML");
+    for (i = length - 1; i >= 1; i--) {
+      for (j = i + 1; j <= length; j++) {
+        ij = indx[j] + i;
+        printf("%d ",fML[ij]);
+      }
+    }
+
+    printf("Matrix FM1");
+    for (i = length - 1; i >= 1; i--) {
+      for (j = i + 1; j <= length; j++) {
+        if (uniq_ML)
+	{
+	  ij = indx[j] + i;
+          printf("%d ",fM1[ij]);
+	}
+      }
+    }
+
+    printf("Value Energy");
+    printf("%d", energy);
+
+    /*Additions for correctness_verification Ends Here*/    
 
     if (fc->params->model_details.circ)
       energy = postprocess_circular(fc, bt_stack, &s);
@@ -272,6 +329,14 @@ vrna_mfe(vrna_fold_compound_t *fc,
 
     free_ms_helpers(ms_dat, fc->strands);
   }
+  
+  /*Additions for correctness_verification Start Here*/ 
+  printf("The elapsed time in HAIRPIN is %ld seconds", HAIR_TIME);
+  printf("The elapsed time in MULTI_BRANCH is %ld seconds", M_BRANCH_TIME);
+  printf("The elapsed time in COAXIAL is %ld seconds", COAX_TIME);
+  printf("The elapsed time in INTERIOR is %ld seconds", INTERIOR_TIME);
+  printf("The elapsed time in MULTI_STRAND is %ld seconds", M_STRAND_TIME);
+  /*Additions for correctness_verification Ends Here*/ 
 
   return mfe;
 }
@@ -3188,28 +3253,56 @@ decompose_pair(vrna_fold_compound_t *fc,
   if (hc_decompose) {
     new_c = INF;
 
+    long start, end;
+    struct timeval timecheck;
+
     /* check for hairpin loop */
+    gettimeofday(&timecheck, NULL);
+    start = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
     energy  = vrna_E_hp_loop(fc, i, j);
     new_c   = MIN2(new_c, energy);
+    gettimeofday(&timecheck, NULL);
+    end = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
+    HAIR_TIME += end - start;
+
 
     /* check for multibranch loops */
+    gettimeofday(&timecheck, NULL);
+    start = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
     energy  = vrna_E_mb_loop_fast(fc, i, j, DMLi1, DMLi2);
     new_c   = MIN2(new_c, energy);
+    gettimeofday(&timecheck, NULL);
+    end = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
+    M_BRANCH_TIME += end - start;
 
     if (dangle_model == 3) {
       /* coaxial stacking */
+      gettimeofday(&timecheck, NULL);
+      start = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
       energy  = vrna_E_mb_loop_stack(fc, i, j);
       new_c   = MIN2(new_c, energy);
+      gettimeofday(&timecheck, NULL);
+      end = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
+      COAX_TIME += end - start;
     }
 
     /* check for interior loops */
+    gettimeofday(&timecheck, NULL);
+    start = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
     energy  = vrna_E_int_loop(fc, i, j);
     new_c   = MIN2(new_c, energy);
+    gettimeofday(&timecheck, NULL);
+    end = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
+    INTERIOR_TIME += end - start;
 
     /* multi-strand decomposition */
     if (fc->strands > 1) {
+      gettimeofday(&timecheck, NULL);
+      start = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
       energy  = pair_multi_strand(fc, i, j, ms_dat);
-      new_c   = MIN2(new_c, energy);
+      new_c   = MIN2(new_c, energy);gettimeofday(&timecheck, NULL);
+      end = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
+      M_STRAND_TIME += end - start;
     }
 
     /* remember stack energy for --noLP option */
