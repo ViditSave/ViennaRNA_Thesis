@@ -3,8 +3,8 @@
 
 ## Changelog:
 1. Base Code 
-2. Print Statements (Used for correctness verification)
-3. Tiling (Naive Method - Does not work)
+2. Correctness Verification (Python framework to verify the 3 computed matrices)
+3. Tiling (Naive Method - Does not work as rotate_aux_arrays cant be peeled)
 4. Memory Allocation changes (Replace N X 1D arrays with ND arrays)
 5. Remove update fms3 and fms5 arrays (Assume single strands)
 6. Tiling (Add extra memory to enable tiling)
