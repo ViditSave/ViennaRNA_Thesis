@@ -6,9 +6,11 @@ import sys
 cwd = os.getcwd()
 rnaChar=["A","C","G","U"]
 
-#compiled_dirs = ["compiled/Vienna_Unmodified/bin","compiled/Vienna_Blocked/bin"]
-#compiled_dirs = ["compiled/Vienna_Unmodified/bin","compiled/Vienna_PeelFms3/bin"]
-compiled_dirs = ["compiled/Vienna_Unmodified/bin","compiled/Vienna_PeelFms5_only/bin"]
+#compiled_dirs = ["compiled/Vienna_Unmodified/bin","compiled/Vienna_Blocked/bin"]       ## Correct
+#compiled_dirs = ["compiled/Vienna_Unmodified/bin","compiled/Vienna_PeelFms3_5/bin"]    ## Correct
+#compiled_dirs = ["compiled/Vienna_Unmodified/bin","compiled/Vienna_Tile_Permute/bin"]  ## Validation Failed
+compiled_dirs = ["compiled/Vienna_Unmodified/bin","compiled/Vienna_Remove_fms3_5/bin"]  ## Correct
+
 
 
 
@@ -67,4 +69,4 @@ for N in [1455,1500,1625,1985,2000,2500]:
     print("\tIncorrect C, fML, fM1&Energy", matrix_out)
 
 os.remove("logfile.txt")
-#os.remove("rna.ps")
+os.remove("rna.ps")

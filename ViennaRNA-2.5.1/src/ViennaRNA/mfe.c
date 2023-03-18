@@ -67,11 +67,13 @@ struct ms_helpers {
  #################################
  */
 
+/*Additions for correctness_verification Start Here*/
 long HAIR_TIME = 0;
 long M_BRANCH_TIME = 0;
 long COAX_TIME = 0;
 long INTERIOR_TIME = 0;
 long M_STRAND_TIME = 0;
+/*Additions for correctness_verification End Here*/
 
 /*
  #################################
@@ -233,9 +235,8 @@ vrna_mfe(vrna_fold_compound_t *fc,
     energy = fill_arrays(fc, ms_dat);
 	
     /*Additions for correctness_verification Start Here*/
-  
-    // Print arrays created by the fill_arrays function   
- 
+    	// Print Matrices created by the fill_arrays function   
+ 	// Read Matrices in vienna_verify.py wrapper script
     vrna_mx_mfe_t  *matrices;
     vrna_param_t   *P;
     vrna_md_t      *md;
@@ -3253,6 +3254,7 @@ decompose_pair(vrna_fold_compound_t *fc,
   if (hc_decompose) {
     new_c = INF;
 
+    /*Additions for correctness_verification Start Here*/ 
     long start, end;
     struct timeval timecheck;
 
@@ -3304,6 +3306,7 @@ decompose_pair(vrna_fold_compound_t *fc,
       end = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
       M_STRAND_TIME += end - start;
     }
+    /*Additions for correctness_verification Start Here*/ 
 
     /* remember stack energy for --noLP option */
     if (noLP) {
