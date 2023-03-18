@@ -10,6 +10,11 @@
 6. Tiling (Add extra memory to enable tiling)
 
 
+## Installation Help:
+```
+./configure --prefix=/s/chopin/l/grad/vidits/Vienna_Opt/compiled/Vienna_<Branch_Name>/
+make install
+```
 
 ## Github Help:
 
