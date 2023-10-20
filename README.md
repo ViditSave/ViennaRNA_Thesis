@@ -15,6 +15,10 @@
 ## Installation Help:
 1. Test Framework:
 ```
+#git clone <URL>
+#git branch --set-upstream-to=origin/test_framework test_framework
+#git pull
+
 python3 compare.py <Internal_Selection> <Bench_1> <Bench_2>
 
 # Internal Selection takes the value "Internal" or "NoInternal"
