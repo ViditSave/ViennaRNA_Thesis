@@ -15,7 +15,7 @@ vrna_fun_zip_add_min(const int  *e1,
                      int        count);
 
 PUBLIC int64_t
-vrna_add_min_vidit(vrna_fold_compound_t *fc,
+vrna_add_min_new(vrna_fold_compound_t *fc,
                    int  ii,
                    int  jj,
                    int  tile,

@@ -32,7 +32,7 @@ fun_zip_add_min_default(const int *e1,
                         int       count);
 
 void
-vrna_add_min_vidit_default(vrna_fold_compound_t *fc,
+vrna_add_min_new_default(vrna_fold_compound_t *fc,
                    int  ii,
                    int  jj,
                    int  tile,
@@ -47,7 +47,7 @@ vrna_fun_zip_add_min_avx512(const int *e1,
                             int       count);
 
 int64_t
-vrna_add_min_vidit_avx2(vrna_fold_compound_t *fc,
+vrna_add_min_new_avx2(vrna_fold_compound_t *fc,
                    int  ii,
                    int  jj,
                    int  tile,
@@ -64,7 +64,7 @@ vrna_fun_zip_add_min_sse41(const int  *e1,
                            int        count);
 
 int
-vrna_add_min_vidit_sse41(vrna_fold_compound_t *fc,
+vrna_add_min_new_sse41(vrna_fold_compound_t *fc,
                    int  ii,
                    int  jj,
                    int  tile,
@@ -110,7 +110,7 @@ vrna_fun_zip_add_min(const int  *e1,
 
 
 PUBLIC int64_t
-vrna_add_min_vidit(vrna_fold_compound_t *fc,
+vrna_add_min_new(vrna_fold_compound_t *fc,
                    int  ii,
                    int  jj,
                    int  tile,
@@ -118,8 +118,8 @@ vrna_add_min_vidit(vrna_fold_compound_t *fc,
                    int  **ha_dmli,
 		   int64_t flop_count)
 { 
-  //vrna_add_min_vidit_default(fc, ii,jj,tile,ha_fmi, ha_dmli);
-  return vrna_add_min_vidit_avx2(fc, ii,jj, tile, ha_fmi, ha_dmli, flop_count); 
+  //vrna_add_min_new_default(fc, ii,jj,tile,ha_fmi, ha_dmli);
+  return vrna_add_min_new_avx2(fc, ii,jj, tile, ha_fmi, ha_dmli, flop_count); 
 }
 
 
@@ -183,7 +183,7 @@ fun_zip_add_min_default(const int *e1,
 
 
 void
-vrna_add_min_vidit_default(vrna_fold_compound_t *fc,
+vrna_add_min_new_default(vrna_fold_compound_t *fc,
                    int  ii,
                    int  jj,
                    int  tile,

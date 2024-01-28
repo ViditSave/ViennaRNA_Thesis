@@ -93,7 +93,7 @@ horizontal_min_Vec4i(__m128i x)
 
 
 PUBLIC int
-vrna_add_min_vidit_sse41(vrna_fold_compound_t *fc,
+vrna_add_min_new_sse41(vrna_fold_compound_t *fc,
                            int  ii,
                            int  jj,
                            int  tile,

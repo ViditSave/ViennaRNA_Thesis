@@ -164,7 +164,7 @@ vrna_E_ml_stems_fast_middle(vrna_fold_compound_t *fc,
 		     int64_t 		  flop_count)
 {
   if (fc)
-    flop_count = vrna_add_min_vidit(fc, ii,jj, tile, ha_fmi, ha_dmli, flop_count);
+    flop_count = vrna_add_min_new(fc, ii,jj, tile, ha_fmi, ha_dmli, flop_count);
   
   return flop_count;
 }

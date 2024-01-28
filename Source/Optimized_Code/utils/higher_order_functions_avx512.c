@@ -129,7 +129,7 @@ vrna_fun_zip_add_min_avx512(const int *e1,
 
 
 PUBLIC int64_t
-vrna_add_min_vidit_avx2(vrna_fold_compound_t *fc,
+vrna_add_min_new_avx2(vrna_fold_compound_t *fc,
                            int  ii,
                            int  jj,
                            int  tile,
